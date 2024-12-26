@@ -1,4 +1,4 @@
-if !has('nvim-0.5')
+if !has("nvim-0.5")
   echohl WarningMsg
   echom "SchemaSelector needs Neovim >= 0.5"
   echohl None

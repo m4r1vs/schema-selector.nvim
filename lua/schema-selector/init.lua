@@ -1,4 +1,4 @@
-local curl = require "plenary.curl"
+local has_curl, curl = pcall(require, "plenary.curl")
 local M = {
   schemas_catalog = "datreeio/CRDs-catalog",
   schema_catalog_branch = "main",
@@ -24,10 +24,14 @@ M.list_github_tree = function()
 end
 
 M.select = function()
+  if not has_curl then
+    vim.notify("Needs Plenary.curl", vim.log.levels.ERROR, {})
+    return
+  end
   local all_crds = M.list_github_tree()
   vim.ui.select(all_crds, { prompt = "Select schema: " }, function(selection)
     if not selection then
-      vim.notify("Canceled.", vim.log.levels.WARN, {})
+      vim.notify("Canceled SchemeSelect.", vim.log.levels.WARN, {})
       return
     end
     local schema_url = M.schema_url .. "/" .. selection
